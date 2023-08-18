@@ -1,0 +1,10 @@
+.dockerignore
+.Dockerfile
+bin/
+ClientApp/dist/
+node_modules/
+obj/
+Properties/
+wwwroot/images/bridges
+wwwroot/dist
+wwwroot/interface/*.jpg

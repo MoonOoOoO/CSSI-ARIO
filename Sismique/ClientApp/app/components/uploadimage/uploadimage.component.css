@@ -1,0 +1,11 @@
+﻿#upload-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.progress {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin: 0;
+    height: 34px;
+}

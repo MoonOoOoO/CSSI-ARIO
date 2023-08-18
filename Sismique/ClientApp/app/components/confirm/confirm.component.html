@@ -1,0 +1,107 @@
+﻿<h1>Result confirmation & modification</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Report information</h3></div>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Report name</strong>: {{ report.name }}</li>
+                <li class="list-group-item"><strong>Created by</strong>: {{ report.user.firstname }} {{ report.user.middlename }} {{ report.user.lastname }}</li>
+                <li class="list-group-item"><strong>Report generation date</strong>: {{ report.date | amDateFormat : "LLL" }}</li>
+                <li class="list-group-item">
+                    <strong>Data collection</strong>: {{ minimumImageDate | amDateFormat : "LLL" }} ~ {{ maximumImageDate | amDateFormat : "LLL" }} (about {{ getDuration() | amDuration : "ms" }})
+                </li>
+                <li class="list-group-item"><strong>Number of images</strong>: {{ report.images.length }}</li>
+                <li class="list-group-item"><strong>GPS</strong>: {{ hasGpsImages() ? "Yes" : "No" }}</li>
+                <li class="list-group-item"><strong>Drawing</strong>: {{ hasDrawingImages() ? "Yes" : "No" }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Event information</h3></div>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Event Description</strong>: {{ report.reportDescription.reportDetail }}</li>
+                <li class="list-group-item"><strong>Hazard Type</strong>: {{ report.reportDescription.hazard }}</li>
+                <li class="list-group-item"><strong>Event Magnitude</strong>: {{ report.reportDescription.magnitude }}</li>
+                <li class="list-group-item"><strong>Event Year</strong>: {{ report.reportDescription.year }}</li>
+                <li class="list-group-item"><strong>Event Location</strong>: {{ report.reportDescription.location }}</li>
+                <li class="list-group-item">
+                    <strong>Source</strong>: <a href="//{{ report.reportDescription.source }}">{{ report.reportDescription.source }}</a>
+                </li>
+                <li class="list-group-item"><strong>Collector</strong>: {{ report.reportDescription.collector }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron">
+    <p>We have generated the labels for the uploaded images. Here are the classification results.</p>
+    <p>The * after the label indicates that the label is generated automatically by our system.</p>
+    <p>If needed, please update the labels manually from the dropdown list.</p>
+</div>
+
+<div class="row">
+    <ng-container *ngFor="let image of report.images; index as i">
+        <div class="clearfix visible-lg" *ngIf="i % 6 == 0"></div>
+        <div class="clearfix visible-md" *ngIf="i % 4 == 0"></div>
+        <div class="clearfix visible-sm" *ngIf="i % 2 == 0"></div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+            <div class="thumbnail">
+                <a [href]="image.file" target="_blank">
+                    <img style="width: 320px; height: 240px" [src]="image.thumbnail" />
+                </a>
+                <div class="caption" style="overflow: auto" id="{{ image.id }}">
+                    <ng-container *ngFor="let ic of display_categories">
+                        <ng-template [ngIf]="image.id == ic.imageId">
+                            <ng-container *ngFor="let c of ic.categories">
+                                <select class="label label-default" name="labels">
+                                    <ng-container *ngFor="let categoryType of categoryTypes">
+                                        <ng-container *ngFor="let category of categoryType.categories">
+                                            <ng-template [ngIf]="category.id == c.categoryId">
+                                                <ng-container *ngFor="let category of categoryType.categories">
+                                                    <option value="{{ category.id }}" *ngIf="category.id == c.categoryId; else notselected" selected>
+                                                        <ng-template [ngIf]="c.confidence == 999">
+                                                            {{ category.name }}
+                                                        </ng-template>
+                                                        <ng-template [ngIf]="c.confidence != 999"> {{ category.name }} * </ng-template>
+                                                    </option>
+                                                    <ng-template #notselected>
+                                                        <option value="{{ category.id }}">
+                                                            {{ isGenerated(image.id, category.id) ? category.name + " *" : category.name }}
+                                                        </option>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </ng-template>
+                                        </ng-container>
+                                    </ng-container>
+                                </select>
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<button class="btn btn-primary btn-lg btn-block" (click)="updateLabels()">Confirm and finish</button>
+<button class="btn btn-warning btn-block" data-toggle="modal" data-target="#resetModal">Reset to Original</button>
+<!-- Reset Modal -->
+<div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalLabel" style="top: 30%">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="resetModalLabel">
+                    <span style="color: darkred"> Reset labels </span>
+                </h4>
+            </div>
+            <div class="modal-body" style="font-size: large">This action will reset all the labels to original!</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="resetLabels()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />

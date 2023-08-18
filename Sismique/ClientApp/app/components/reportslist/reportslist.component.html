@@ -1,0 +1,25 @@
+﻿<hr />
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <form class="text-center" (ngSubmit)="searchFunction()" [formGroup]="searchForm">
+                <div class="input-group">
+                    <input type="text" class="form-control" formControlName="searchtext" placeholder="Search..." />
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="panel-body" style="height: 15em; overflow-y: scroll; padding: 0">
+            <div id="reportlist" class="list-group">
+                <ng-container *ngFor="let report of paginatedList.reports">
+                    <a class="list-group-item list-item" [routerLink]="['/report', report.id]">
+                        <span class="badge">{{ report.numberImages }} images</span>
+                        <span style="font-size: 16px">{{ report.name }}</span>
+                    </a>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

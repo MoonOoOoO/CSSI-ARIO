@@ -1,0 +1,17 @@
+﻿<h1>Map of reports</h1>
+<hr />
+<agm-map [zoom]="3">
+    <agm-marker *ngFor="let report of reportList" [latitude]="report.latitude" [longitude]="report.longitude">
+        <agm-info-window>
+            <a [routerLink]="['/report', report.id]">
+                <h3>{{ report.name }}</h3>
+                <img *ngIf="report.thumbnail" [src]="report.thumbnail" alt="Thumbnail image" class="map_thumbnail" />
+                <ul class="list-unstyled">
+                    <li><strong>Id</strong>: {{ report.id }}</li>
+                    <li><strong>Date</strong>: {{ report.date | amDateFormat : "LLL" }}</li>
+                    <li><strong>Number of images</strong>: {{ report.numberImages }}</li>
+                </ul>
+            </a>
+        </agm-info-window>
+    </agm-marker>
+</agm-map>

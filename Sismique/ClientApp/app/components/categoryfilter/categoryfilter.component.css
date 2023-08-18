@@ -1,0 +1,36 @@
+﻿.navbar-component {
+    color: #ffffff;
+}
+
+.navbar-component hr {
+    border-color: #9d9d9d;
+    background-color: #9d9d9d;
+}
+
+ul.list-nobullet {
+    font-size: 15px;
+    list-style: none;
+    color: #666666;
+    margin-left: -10px;
+}
+
+li.selected {
+    color: #cccccc;
+}
+
+.filter-list-container {
+    overflow-y: auto;
+    max-height: calc(100vh - 550px);
+    margin: 5px;
+    padding: 5px;
+}
+
+.categoryType {
+    color: #ffffff;
+    font-family: "Microsoft YaHei";
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 0 5px 0;
+    border-bottom: 2px solid #aaaaaa;
+    margin: 15px 0 3px 0;
+}

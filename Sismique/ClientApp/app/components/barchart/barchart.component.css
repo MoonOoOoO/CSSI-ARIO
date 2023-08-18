@@ -1,0 +1,33 @@
+﻿.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: sandybrown;
+    transition-duration: 0.3s;
+}
+
+.axis-title {
+    fill: none;
+    stroke: black;
+    stroke-width: 0.5px;
+}
+
+svg {
+    overflow: visible !important;
+}
+
+div.bartip {
+    position: absolute;
+    text-align: center;
+    padding: 0.5rem;
+    background: #ffffff;
+    color: #313639;
+    border: 1px solid #313639;
+    border-radius: 8px;
+    pointer-events: none;
+    font-size: 1.3rem;
+    width: 80px;
+    transition-duration: 0.5s;
+    opacity: 1;
+}

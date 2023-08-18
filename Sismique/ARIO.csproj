@@ -1,0 +1,161 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <ApplicationIcon>wwwroot\P.ico</ApplicationIcon>
+    <UserSecretsId>4e150c3f-cc9a-4588-8458-e15c596337d2</UserSecretsId>
+    <OutputType>Exe</OutputType>
+    <StartupObject></StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MetadataExtractor" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.7.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Content Remove="ClientApp\**" />
+    <TypeScriptCompile Remove="node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\app\components\categories\categories.component.ts" />
+    <None Remove="ClientApp\app\components\categoryfilter\categoryfilter.component.html" />
+    <None Remove="ClientApp\app\components\categoryfilter\categoryfilter.component.ts" />
+    <None Remove="ClientApp\app\components\category\category.component.ts" />
+    <None Remove="ClientApp\app\components\googlemap\googlemap.component.ts" />
+    <None Remove="ClientApp\app\components\newreport\newreport.component.ts" />
+    <None Remove="ClientApp\app\components\reportsmap\reportsmap.component.ts" />
+    <None Remove="ClientApp\app\components\report\report.component.ts" />
+    <None Remove="ClientApp\app\components\shared\bridgeCategory.ts" />
+    <None Remove="ClientApp\app\components\shared\bridgeimage.ts" />
+    <None Remove="ClientApp\app\components\shared\bridgeImageCategory.ts" />
+    <None Remove="ClientApp\app\components\shared\categories.resolver.ts" />
+    <None Remove="ClientApp\app\components\shared\category.resolver.ts" />
+    <None Remove="ClientApp\app\components\shared\category.service.ts" />
+    <None Remove="ClientApp\app\components\shared\category.ts" />
+    <None Remove="ClientApp\app\components\shared\categoryfilter.service.ts" />
+    <None Remove="ClientApp\app\components\shared\categoryfilter.ts" />
+    <None Remove="ClientApp\app\components\shared\categorytype.service.ts" />
+    <None Remove="ClientApp\app\components\shared\categorytype.ts" />
+    <None Remove="ClientApp\app\components\shared\categorytypes.resolver.ts" />
+    <None Remove="ClientApp\app\components\shared\geolocation.ts" />
+    <None Remove="ClientApp\app\components\shared\image.ts" />
+    <None Remove="ClientApp\app\components\shared\imagecategory.ts" />
+    <None Remove="ClientApp\app\components\shared\imagepaginatedlist.ts" />
+    <None Remove="ClientApp\app\components\shared\listreport.ts" />
+    <None Remove="ClientApp\app\components\shared\report.resolver.ts" />
+    <None Remove="ClientApp\app\components\shared\report.service.ts" />
+    <None Remove="ClientApp\app\components\shared\report.ts" />
+    <None Remove="ClientApp\app\components\shared\reportcollection.service.ts" />
+    <None Remove="ClientApp\app\components\shared\reportcollection.ts" />
+    <None Remove="ClientApp\app\components\shared\reportdescription.service.ts" />
+    <None Remove="ClientApp\app\components\shared\reportdescription.ts" />
+    <None Remove="ClientApp\app\components\shared\reportpaginatedlist.ts" />
+    <None Remove="ClientApp\app\components\shared\user.ts" />
+    <None Remove="ClientApp\app\components\uploadimage\uploadimage.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\categories\categories.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\categoryfilter\categoryfilter.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\categoryfilter\categoryfilter.component.html" />
+    <TypeScriptCompile Include="ClientApp\app\components\category\category.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\googlemap\googlemap.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\newreport\newreport.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\reportsmap\reportsmap.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\report\report.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\bridgecategory.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\bridgeimage.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\bridgeimagecategory.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\categories.resolver.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\category.resolver.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\categoryfilter.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\categoryfilter.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\categorytypes.resolver.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\categorytype.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\categorytype.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\geolocation.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\imagecategory.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\imagepaginatedlist.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\listreport.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\report.resolver.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\report.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\report.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\category.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\category.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\image.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\reportcollection.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\reportcollection.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\reportdescription.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\reportdescription.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\reportpaginatedlist.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\user.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\uploadimage\uploadimage.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Report\Export.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\archives\" />
+    <Folder Include="wwwroot\images\bridges\" />
+  </ItemGroup>
+
+  <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+
+    <!-- In development, the dist files won't exist on the first run or when cloning to
+         a different machine, so rebuild them if not already present. -->
+    <Message Importance="high" Text="Performing first-run Webpack build..." />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

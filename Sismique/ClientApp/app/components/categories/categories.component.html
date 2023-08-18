@@ -1,0 +1,144 @@
+﻿<h1>Categories</h1>
+<hr />
+
+<ul>
+    <li *ngFor="let categoryType of categoryTypes">
+        <div class="title">{{ categoryType.name }}</div>
+        <ul>
+            <li *ngFor="let category of categoryType.categories">
+                <!--<a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>-->
+                <div *ngIf="category.name == 'Building exterior'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>This category has the opposite meaning as the LOCIN category. These images show a space having no ceiling or surrounding walls.</p>
+                </div>
+                <div *ngIf="category.name == 'Building interior'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        This category is defined as images that have a general sense of inside space. For example, these images might show a space that is surrounded by walls or windows, or they might
+                        contain interior building components or a clearly indoor region (e.g., room, basement, or corridor).
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Canonical view'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>Images of this category indicate the image contains a building overview with a canonical/multi-faceted view.</p>
+                </div>
+                <div *ngIf="category.name == 'Front view'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>Images of this category indicate the image contains a building overview with a single side view.</p>
+                </div>
+                <div *ngIf="category.name == 'Overall severe damage'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        This category indicates that the building in the image is significantly damaged, where the structure looks unstable (leaning, missing columns/walls), with large chunks of the
+                        structure missing, or entire sections of the building demolished.
+                    </p>
+                    <!--<p>This category indicates that the building in the image is only slightly damaged or undamaged at all, with typically no broken windows or very minor cracks.</p>-->
+                </div>
+                <div *ngIf="category.name == 'Overall moderate damage'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        This category indicates that the building in the image is undamaged to moderately damaged, with or without visual evidence of cracks, broken windows, some spalling, and/or
+                        effaced external walls.
+                    </p>
+                    <!--<p>This category indicates that the building in the image is slightly to moderately damaged, with visual evidence of cracks, broken windows, some spalling, and/or effaced external walls.</p>-->
+                </div>
+                <!--<div *ngIf="category.name == 'Overall Damage 2'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>This category indicates that the building in the image is significantly damaged, where the structure looks unstable (leaning, missing columns/walls), with large chunks of the structure missing, or entire sections of the building demolished.</p>
+                </div>-->
+                <div *ngIf="category.name == 'Component damage 0'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>This category indicates that there is little (e.g. crack, minor spalling) to no visual damage on the building component of interest.</p>
+                    <!--<p>This label indicates that there is little (e.g. crack, minor spalling) to no visual damage on the building component.</p>-->
+                </div>
+                <div *ngIf="category.name == 'Component damage 1'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        This category indicates that there is moderate degree of visual damage, typically spalling and cracking, where moderate sections of the component show signs of damage. However,
+                        this category is visually distinguished from the concrete damage category by the absence of rebar.
+                    </p>
+                    <!--<p>Like CD, this category is applied to scenes of structural components with moderate degree of concrete damage, typically spalling and cracking, where moderate sections of the component show signs of damage.</p>-->
+                </div>
+                <div *ngIf="category.name == 'Concrete damage'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        This category indicates that there is concrete damage on structural components more severe than component damage 1. It is visually distinguished from spalling damages
+                        categorized as component damage 1 with the exposure of rebar on damaged building components.
+                    </p>
+                    <!--<p>The characteristics of this category inherits from CDR2 in that it is also describes concrete damage on structural components but is a more severe classification than CDR2. It is visually distinguished from CDR2 as it has the exposure of rebar on damaged building components.</p>-->
+                </div>
+                <div *ngIf="category.name == 'Masonry damage'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        Images of this category is described by the presence of masonry damage. This is indicated by the exposure masonry on walls and/or degradations (such as holes, or cracks)
+                        visible on a masonry wall.
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Column'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>This category consists of scenes of columns as the focus of the image.</p>
+                </div>
+                <!--<div *ngIf="category.name == 'Beam'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>This category consists of scenes of beams as the focus of the image.</p>
+                </div>-->
+                <div *ngIf="category.name == 'Wall'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>This category consists of scenes of walls as the focus of the image.</p>
+                </div>
+                <div *ngIf="category.name == 'GPS'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        Images are collected frequently to document the GPS location values shown on a GPS device if they are not geotagged. As in the previous case, these are helpful in case the
+                        geotagging images are reformatted which often occurs in the elimination of the EXIF information.
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Drawing'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        This category is defined as an image primarily containing close-up or overview of structural drawings. For example, images including floor plans, building schematics, and/or
+                        column dimensions are categorized in this category. In many cases, digital versions of the structural drawings for the subject buildings do not exist. Photographs of the entire
+                        set of structural drawings provide valuable reference information that will enable a better understanding of the subject building.
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Watch'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        Images that focus on an analog or digital timepiece are commonly collected during reconnaissance missions to document the time associated with a particular stage in the data
+                        collection process. Images in this category are particularly useful when images are reformatted/resized and the EXIF information is lost. They are also useful when the date and
+                        time of the digital camera have not been corrected according to the local time zone.
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Sign'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        Like the DWG category, images of this category focus on writings on and near buildings such as notices, advertisements, signs that indicate building names, or unit numbers,
+                        historical memorials, or direction signs.
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Measurement'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        Images in this category are to record the absolute or relative size of the building components (e.g., column or rebar spacing) or damage (e.g., cracks or spalling). The size
+                        may be measured using a measuring tape, crack gauge, or fixed size objects (e.g., pen, hand, or note). The images are typically captured at a close distance to the target
+                        object so that the digits of the measurement tool are visible.
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Non-building components'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        This category contains images of non-structural assets in and near buildings that are irrelevant to condition assessment of structures and its components. Some scenes include
+                        ceilings, generators, extruding cables, piping, lighting systems, or objects inside rooms/corridors (e.g. tables, bookshelves, warehouse stockpiles).
+                    </p>
+                </div>
+                <div *ngIf="category.name == 'Irrelevant images'">
+                    <a role="button" [routerLink]="['/category', category.id]" title="See all images in this category">{{ category.name }}</a>
+                    <p>
+                        During field reconnaissance, mainly images of non-structures are often collected. These images typically contain scenes of people, scenery, animals, or objects. This category
+                        helps filter out images irrelevant to building assessments.
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,26 @@
+version: "2.0"
+services:
+  ario-db:
+    image: "${PRIVATE_REGISTRY}/ario:DB"
+    container_name: ario-database
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Passw0rd
+  ario-classifier:
+    image: "${PRIVATE_REGISTRY}/ario:classifier"
+    container_name: ario-classifier
+  ario-application:
+    image: "${PRIVATE_REGISTRY}/ario:degenkolb"
+    container_name: ario-application
+    stdin_open: true
+    tty: true
+    ports:
+      - ${ARIO_PORT}:5000
+    environment:
+      - DB_SERVER_URL=ario-db
+      - CLF_SERVER_URL=http://ario-classifier:16000/predict
+    depends_on:
+      - ario-db
+      - ario-classifier

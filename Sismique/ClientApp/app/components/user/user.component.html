@@ -1,0 +1,258 @@
+﻿<div *ngIf="!islogin; else loggedin">
+    <div class="row">
+        <div class="col-md-4">
+            <h1>User Center</h1>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="true">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Register</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade active in" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <hr />
+                    <form (ngSubmit)="login()" #userForm="ngForm">
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="username" required [(ngModel)]="user.username" name="username" #username="ngModel" />
+                        <br />
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="password" required [(ngModel)]="user.password" name="password" #password="ngModel" />
+                        <br />
+                        <button type="submit" class="btn btn-success" style="width: 100%" [disabled]="!userForm.form.valid">Login</button>
+                    </form>
+                    <hr />
+                    <!-- login success alert -->
+                    <div id="loginSuccess" class="panel panel-success alert-panel hidden">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Success</h3>
+                        </div>
+                        <div class="panel-body text-center">
+                            <h4>Login successful, redirecting...</h4>
+                        </div>
+                        <div class="panel-footer text-right">Welcome, {{ user.username }}.</div>
+                    </div>
+                    <!-- login failed alert -->
+                    <div id="loginAlert" class="panel panel-danger alert-panel hidden">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Error</h3>
+                        </div>
+                        <div class="panel-body text-center">
+                            <h4>Login information is incorrect!</h4>
+                        </div>
+                        <div class="panel-footer text-right">
+                            <button class="btn btn-danger" (click)="hideAlert('loginAlert')">Ok</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <hr />
+                    <form (ngSubmit)="register()" [formGroup]="regForm">
+                        <label for="username"> Username </label>
+                        <input type="text" class="form-control" formControlName="username" placeholder="required" required />
+                        <div id="userExists" style="display: none; color: darkred; position: absolute; right: 1em">Username already existed</div>
+                        <br />
+                        <label for="password"> Password </label>
+                        <input type="password" class="form-control" formControlName="password" placeholder="required" required />
+                        <br />
+                        <label for="firstname"> First Name </label>
+                        <input type="text" class="form-control" formControlName="firstname" placeholder="required" required />
+                        <br />
+                        <label for="middlename"> Middle Name </label>
+                        <input type="text" class="form-control" formControlName="middlename" />
+                        <br />
+                        <label for="lastname"> Last Name </label>
+                        <input type="text" class="form-control" formControlName="lastname" placeholder="required" required />
+                        <br />
+                        <label for="institution"> Institution </label>
+                        <input type="text" class="form-control" formControlName="institution" placeholder="required" required />
+                        <br />
+                        <button class="btn btn-danger" style="width: 100%" type="submit" [disabled]="!regForm.valid">Register</button>
+                    </form>
+                    <!-- register success alert -->
+                    <div id="registerSuccess" class="panel panel-success alert-panel hidden">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Success</h3>
+                        </div>
+                        <div class="panel-body text-center">
+                            <h4>Registration complete. Please login.</h4>
+                        </div>
+                        <div class="panel-footer text-right">
+                            <button class="btn btn-success" (click)="hideAlert('registerSuccess')">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loggedin>
+    <div class="row">
+        <div class="col-md-4">
+            <h1>User Center</h1>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-6 text-center">
+            <h1>
+                <a [routerLink]="['/newreport']" class="btn btn-primary btn-lg" role="button">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Create A Report
+                </a>
+                <button class="btn btn-lg btn-success" (click)="logout()">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                    &nbsp;Logout
+                </button>
+            </h1>
+            <!-- logout success alert -->
+            <div id="logoutAlert" class="panel panel-success text-left alert-panel hidden">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Goodbye~</h3>
+                </div>
+                <div class="panel-body text-center">
+                    <h4>You are logged out.</h4>
+                </div>
+                <div class="panel-footer text-right">
+                    <button class="btn btn-success" (click)="hideAlert('logoutAlert')">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-right">
+                        Good {{ greeting }}, <span style="font: bolder 20px arial">{{ user.firstname }} {{ user.middlename }} {{ user.lastname }}</span
+                        >.
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <h3>Total reports: {{ user.reports.length }}</h3>
+                    <h4>Shared reports: {{ sharedTotal() }}</h4>
+                    <h4>Total images: {{ totalImages() }}</h4>
+                </div>
+                <p class="text-right text-danger">Last Login: {{ user.lastlogin | amDateFormat : "LLL" }}&nbsp;&nbsp;</p>
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs" id="pills-tab" role="tablist">
+        <li class="nav-item active">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">My reports</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Favorites</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade active in" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <!-- My reports -->
+            <div class="row">
+                <div class="col-md-11">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr style="font-size: 18px">
+                                <th>Report Name</th>
+                                <th>Creation Date</th>
+                                <th class="text-center">Total Images</th>
+                                <th class="text-center">Shared</th>
+                                <th class="text-center">Action</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let report of user.reports">
+                                <tr id="report-{{ report.id }}" style="font-size: 15px" [routerLink]="['/report', report.id]">
+                                    <td>{{ report.name }}</td>
+                                    <td>{{ report.date | amDateFormat : "LLL" }}</td>
+                                    <td class="text-center">{{ report.numberImages }}</td>
+                                    <td class="text-center">
+                                        <span class="glyphicon glyphicon-ok" style="font-size: 20px; color: lightgreen" *ngIf="report.shared; else elseBlock"> </span>
+                                        <ng-template #elseBlock>
+                                            <span class="glyphicon glyphicon-remove" style="font-size: 18px; color: lightcoral"> </span>
+                                        </ng-template>
+                                    </td>
+                                    <td class="text-center" style="width: 120px" (click)="$event.stopPropagation()">
+                                        <ng-container *ngIf="report.shared; else public">
+                                            <button class="btn btn-info" (click)="toggleShare(report.id, report)">Unshare</button>
+                                        </ng-container>
+                                        <ng-template #public>
+                                            <button class="btn btn-warning" (click)="toggleShare(report.id, report)">Share</button>
+                                        </ng-template>
+                                    </td>
+                                    <td (click)="$event.stopPropagation()">
+                                        <button class="btn btn-danger" (click)="deleteReport(report.id, report.reportDescriptionId, report.name)">Delete</button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-container *ngIf="user.reports.length == 0">
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <h3 style="color: darkolivegreen">
+                                            You don't have any reports, please
+                                            <a [routerLink]="['/newreport']"> create a report </a>
+                                            first.
+                                        </h3>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- My collection -->
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <div class="row">
+                <div class="col-md-11">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr style="font-size: 18px">
+                                <th>Report Name</th>
+                                <th>Location</th>
+                                <th class="text-center">Total Images</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let reportCollection of user.reportCollections">
+                                <tr id="collection-report-{{ reportCollection['report'].id }}" style="font-size: 15px" [routerLink]="['/report', reportCollection['report'].id]">
+                                    <td>{{ reportCollection["report"].name }}</td>
+                                    <ng-container *ngIf="reportCollection['report'].reportDescription.location; else emptylocation">
+                                        <td>{{ reportCollection["report"].reportDescription.location }}</td>
+                                    </ng-container>
+                                    <ng-template #emptylocation>
+                                        <td>N/A</td>
+                                    </ng-template>
+                                    <td class="text-center">{{ reportCollection["report"].images.length }}</td>
+                                    <td (click)="$event.stopPropagation()">
+                                        <button class="btn btn-danger" (click)="removeReportFromCollection(reportCollection['report'].id, reportCollection['report'].name)">Remove</button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-container *ngIf="user.reportCollections.length == 0">
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <h3 style="color: darkolivegreen">You don't have any reports yet, please add a report first.</h3>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<div id="bg" class="backgroud"></div>

@@ -1,0 +1,19 @@
+﻿.add-btn,
+.remove-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+    text-decoration: none;
+    border: 1px #969696 solid;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.add-btn {
+    background-color: #969696;
+    color: #ffffff;
+}
+
+.remove-btn {
+    color: #969696;
+}

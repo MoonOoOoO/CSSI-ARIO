@@ -1,0 +1,8 @@
+﻿agm-map {
+    height: 75vh;
+}
+
+img.map_thumbnail {
+    max-width: 16vw;
+    max-height: 32vh;
+}

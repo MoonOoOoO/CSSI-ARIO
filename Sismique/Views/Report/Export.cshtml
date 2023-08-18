@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ARIO - Automated Reconnaissance Image Organizer</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container-fluid">
+        <h1>Building Reconnaissance Report: @Model.Report.Name</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Report information</h3></div>
+
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Report name</strong>: @Model.Report.Name</li>
+                <li class="list-group-item"><strong>Report generation date</strong>: @Model.Report.Date.ToString("f")</li>
+                <li class="list-group-item"><strong>Number of images</strong>: @Model.Report.Images.Count</li>
+                <li class="list-group-item">
+                    <strong>GPS</strong>:
+                    @if (Model.HasGPSCoordinates())
+                    {
+                        @:Yes (<a href="http://www.google.com/maps/place/@Model.GPSString()">Open Google Map</a>)
+                    }
+                    else
+                    {
+                        @:No
+                    }
+                </li>
+            </ul>
+        </div>
+
+        @* Index of the current image displayed. Useful for the clearfix. *@
+        @{int index;}
+
+        <h2>All images</h2>
+        <div class="row">
+            @{index = 0;}
+            @foreach (var image in Model.Report.Images)
+            {
+                if (index % 6 == 0)
+                {<div class="clearfix visible-lg"></div>}
+                if (index % 4 == 0)
+                {<div class="clearfix visible-md"></div>}
+                if (index % 2 == 0)
+                {<div class="clearfix visible-sm"></div>}
+
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="@image.File">
+                            <img src="@image.Thumbnail" alt="@image.File" />
+                        </a>
+                        <div class="caption">
+                            @* Date format: Thursday, April 10, 2008 6:30 AM *@
+                            @image.Date.ToString("f")
+                        </div>
+                    </div>
+                </div>
+                index++;
+            }
+        </div>
+
+        @foreach (var category in Model.Categories)
+        {
+            <h2>Category: @category.Name</h2>
+            <div class="row">
+                @{index = 0;}
+                @foreach (var image in Model.Report.Images)
+                {
+                    if (@Model.ImageHasCategory(image, category.ID))
+                    {
+                        if (index % 6 == 0)
+                        {<div class="clearfix visible-lg"></div>}
+                        if (index % 4 == 0)
+                        {<div class="clearfix visible-md"></div>}
+                        if (index % 2 == 0)
+                        {<div class="clearfix visible-sm"></div>}
+
+                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                            <div class="thumbnail">
+                                <a href="@image.File">
+                                    <img src="@image.Thumbnail" alt="@image.File" />
+                                </a>
+                            </div>
+                        </div>
+                        index++;
+                    }
+                }
+            </div>
+        }
+    </div>
+</body>
+</html>

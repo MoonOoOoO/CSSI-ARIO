@@ -1,0 +1,63 @@
+﻿<h1>Bridge Comparison by Category(Prototype)</h1>
+<hr />
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs nav-justified" style="margin-bottom: 2em" role="tablist">
+    <li role="presentation" class="active"><a href="#bov" aria-controls="bov" role="tab" data-toggle="tab" (click)="updateImageListByCategory($event.target.innerText)">Bridge Overview</a></li>
+    <li role="presentation"><a href="#deck" aria-controls="deck" role="tab" data-toggle="tab" (click)="updateImageListByCategory($event.target.innerText)">Deck</a></li>
+    <li role="presentation"><a href="#sup" aria-controls="sup" role="tab" data-toggle="tab" (click)="updateImageListByCategory($event.target.innerText)">Superstructure</a></li>
+    <li role="presentation"><a href="#sub" aria-controls="sub" role="tab" data-toggle="tab" (click)="updateImageListByCategory($event.target.innerText)">Substructure</a></li>
+    <li role="presentation"><a href="#rail" aria-controls="rail" role="tab" data-toggle="tab" (click)="updateImageListByCategory($event.target.innerText)">Railing</a></li>
+    <li role="presentation"><a href="#detail" aria-controls="detail" role="tab" data-toggle="tab" (click)="updateImageListByCategory($event.target.innerText)">Detail</a></li>
+    <li role="presentation"><a href="#other" aria-controls="other" role="tab" data-toggle="tab" (click)="updateImageListByCategory($event.target.innerText)">Other</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <!--<div role="tabpanel" class="tab-pane active">-->
+    <ng-container *ngFor="let year of listOfYears; index as i">
+        <ng-container *ngIf="i == 0">
+            <div class="col-md-3 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center" style="padding: 10px 15px 5px">
+                        <span style="font-size: 20px">{{ year }}</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <ng-container *ngFor="let img of bridgeImages">
+                            <ng-container *ngIf="img.year == year">
+                                <a [href]="img.file" target="_blank">
+                                    <img style="margin-bottom: 5px; width: 100%" [src]="img.file" />
+                                </a>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="i != 0">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center" style="padding: 10px 15px 5px">
+                        <span style="font-size: 20px">{{ year }}</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <ng-container *ngFor="let img of bridgeImages">
+                            <ng-container *ngIf="img.year == year">
+                                <a [href]="img.file" target="_blank">
+                                    <img style="margin-bottom: 5px; width: 100%" [src]="img.file" />
+                                </a>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+    <!--</div>-->
+    <!--<div role="tabpanel" class="tab-pane" id="deck">Deck</div>
+    <div role="tabpanel" class="tab-pane" id="sup">Superstructure</div>
+    <div role="tabpanel" class="tab-pane" id="sub">Substructure</div>
+    <div role="tabpanel" class="tab-pane" id="rail">Railing</div>
+    <div role="tabpanel" class="tab-pane" id="detail">Detail</div>
+    <div role="tabpanel" class="tab-pane" id="other">Other</div>-->
+</div>

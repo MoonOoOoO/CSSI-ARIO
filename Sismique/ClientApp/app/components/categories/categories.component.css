@@ -1,0 +1,20 @@
+﻿a {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+p {
+    font-family: "Segoe UI";
+    font-size: 15px;
+}
+
+.title {
+    font-weight: bold;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    margin: 5px;
+}
+
+li {
+    list-style: none;
+}

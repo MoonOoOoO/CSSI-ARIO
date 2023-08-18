@@ -1,0 +1,494 @@
+﻿<h1>Building Reconnaissance Report: {{ report.name }}</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Building information</h3></div>
+            <div class="panel-body">
+                <div class="row">
+                    <ng-container *ngFor="let image of getOverviewImages(2); index as i">
+                        <div class="clearfix visible-md visible-lg" *ngIf="i % 2 == 0"></div>
+                        <div class="col-xs-12 col-md-6">
+                            <a [href]="image.file" class="thumbnail" target="_blank">
+                                <img [src]="image.thumbnail" />
+                            </a>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="row" *ngIf="hasGpsImages()">
+                    <div class="col-md-12 map-container">
+                        <googlemap [coordinates]="representativeGeoLocation()"></googlemap>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div id="shareAlert" class="panel panel-success alert-panel hidden">
+            <div class="panel-heading">
+                <h3 class="panel-title">Shared</h3>
+            </div>
+            <div class="panel-body text-center">
+                <h4>This report is now public.</h4>
+            </div>
+            <div class="panel-footer text-right">
+                <button class="btn btn-success" (click)="hideAlert('shareAlert')">OK</button>
+            </div>
+        </div>
+        <div id="unShareAlert" class="panel panel-success alert-panel hidden">
+            <div class="panel-heading">
+                <h3 class="panel-title">Unshared</h3>
+            </div>
+            <div class="panel-body text-center">
+                <h4>This report is now private.</h4>
+            </div>
+            <div class="panel-footer text-right">
+                <button class="btn btn-success" (click)="hideAlert('unShareAlert')">OK</button>
+            </div>
+        </div>
+        <div id="deleteAlert" class="panel panel-danger alert-panel hidden">
+            <div class="panel-heading">
+                <h3 class="panel-title">Delete</h3>
+            </div>
+            <div class="panel-body text-center">
+                <h4>
+                    Report <span style="font-weight: bold">{{ report.name }}</span> has been deleted.
+                </h4>
+            </div>
+            <div class="panel-footer text-right">
+                <button class="btn btn-danger" (click)="hideAlert('deleteAlert')">OK</button>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Report Information</h3></div>
+            <table class="table">
+                <tr>
+                    <td class="col-md-4">
+                        <strong>Report name</strong>:
+                    </td>
+                    <td>
+                        {{ report.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Created by</strong>:
+                    </td>
+                    <td>
+                        {{ report.user.firstname }} {{ report.user.middlename }} {{ report.user.lastname }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Created date</strong>:
+                    </td>
+                    <td>
+                        {{ report.date | amDateFormat : "LLL" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Data collection</strong>:
+                    </td>
+                    <td>
+                        {{ minimumImageDate | amDateFormat : "LLL" }} ~ {{ maximumImageDate | amDateFormat : "LLL" }} (about {{ getDuration() | amDuration : "ms" }})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Image count</strong>:
+                    </td>
+                    <td>
+                        {{ report.images.length }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Image GPS</strong>:
+                    </td>
+                    <td>
+                        {{ latitude }},&nbsp;{{ longitude }}
+                    </td>
+                </tr>
+            </table>
+
+            <!--<ul class="list-group">
+                <li class="list-group-item"><strong>Report name</strong>: {{ report.name }}</li>
+                <li class="list-group-item"><strong>Created by</strong>: {{ report.user.firstname }} {{ report.user.middlename }} {{ report.user.lastname }}</li>
+                <li class="list-group-item"><strong>Report generation date</strong>: {{ report.date | amDateFormat : "LLL" }}</li>
+                <li class="list-group-item">
+                    <strong>Data collection</strong>: {{ minimumImageDate | amDateFormat : "LLL" }} ~ {{ maximumImageDate | amDateFormat : "LLL" }} (about {{ getDuration() | amDuration : "ms" }})
+                </li>
+                <li class="list-group-item"><strong>Number of images</strong>: {{ report.images.length }}</li>-->
+            <!-- <li class="list-group-item"><strong>GPS</strong>: {{ hasGpsImages() ?'Yes':'No' }}</li> -->
+            <!--<li class="list-group-item"><strong>Image GPS</strong>: {{ latitude }},&nbsp;{{ longitude }}</li>-->
+            <!-- <li class="list-group-item"><strong>Drawing</strong>: {{ hasDrawingImages() ? "Yes" : "No" }}</li> -->
+            <!--</ul>-->
+            <div class="panel-body" [hidden]="islogin">
+                <button class="btn btn-primary btn-lg btn-block" [routerLink]="['/user']">Login to download</button>
+            </div>
+            <div class="panel-body text-center" [hidden]="!islogin">
+                <h4>Download</h4>
+                <div class="btn-group">
+
+                    <!-- Download report button -->
+                    <button class="btn btn-primary btn-lg" (click)="downloadReport()" [disabled]="!readyForDownload">Report.zip</button>
+                    <!-- Download labels csv button -->
+                    <button class="btn btn-primary btn-lg" (click)="downloadLabelsCSV()" [disabled]="!readyForDownload">Labels.csv</button>
+                </div>
+            </div>
+            <div class="panel-body" [hidden]="!authorized">
+                <!-- Upload report component -->
+                <upload-image [report]="report" (imageUploaded)="addImage($event)" (uploadFinished)="uploadFinished()"></upload-image>
+                <br />
+                <!-- Report sharing button group -->
+                <div class="btn-group btn-group-justified" role="group">
+                    <a class="btn btn-success text-center" [ngClass]="{ disabled: report.shared }" (click)="toggleShare()">Share</a>
+                    <a class="btn btn-success text-center" [ngClass]="{ disabled: !report.shared }" (click)="toggleShare()">Unshare</a>
+                </div>
+                <br />
+                <!-- Delete report function -->
+                <a class="btn btn-danger btn-block text-center" data-toggle="modal" data-target="#myModal">Delete</a>
+
+                <!-- Delete confirmation message -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Delete Report</h4>
+                            </div>
+                            <div class="modal-body" style="font-size: large">
+                                Are you sure to delete report <span style="font-weight: bold">{{ report.name }}</span>?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteReport()">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3>Report Summary</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="btn-group-vertical pull-right">
+                            <button id="byDefault" type="button" class="btn btn-default">Default</button>
+                            <button id="byValue" type="button" class="btn btn-default">Sort</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <app-barchart id="summary" [ID]="'summary'" [STATISTICS]="reportSummary"></app-barchart>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default" id="reportDescription">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3>Event Details</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="btn-group-lg pull-right" [hidden]="!authorized">
+                            <a class="btn btn-default" (click)="editReportDescription($event)">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table">
+                <tr>
+                    <td class="col-md-2">
+                        <strong>Description</strong>:
+                    </td>
+                    <td>
+                        <input style="border: 1px solid white; width: 100%; background: none" [(ngModel)]="report.reportDescription.reportDetail" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Hazard</strong>:
+                    </td>
+                    <td>
+                        <input style="border: 1px solid white; width: 100%; background: none " [(ngModel)]="report.reportDescription.hazard" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Magnitude</strong>:
+                    </td>
+                    <td>
+                        <input style="border: 1px solid white; width: 100%; background: none " [(ngModel)]="report.reportDescription.magnitude" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Year</strong>:
+                    </td>
+                    <td>
+                        <input style="border: 1px solid white; width: 100%; background: none " [(ngModel)]="report.reportDescription.year" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Location</strong>:
+                    </td>
+                    <td>
+                        <input name="location" #location="ngModel" type="text"
+                               placeholder="Search Location"
+                               autocorrect="off" autocapitalize="off"
+                               spellcheck="off" (keydown.enter)="$event.preventDefault()"
+                               [(ngModel)]="report.reportDescription.location"
+                               style="border: 1px solid white; width: 100%; background: none "
+                               disabled #search />
+                        <agm-map id="agm-map" [latitude]="gmap_latitude" [longitude]="gmap_longitude" [zoom]="zoom">
+                            <agm-marker [latitude]="gmap_latitude" [longitude]="gmap_longitude"></agm-marker>
+                        </agm-map>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Stories</strong>:
+                    </td>
+                    <td>
+                        <input style="border: 1px solid white; width: 100%; background: none " [(ngModel)]="report.reportDescription.buildingStories" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Tagging</strong>:
+                    </td>
+                    <td id="tagging-label">
+                        <div [hidden]="editing">
+                            <span id="tagging-display" class="label label-success" *ngIf="this.report.reportDescription.tagging == 'light'">
+                                {{ this.report.reportDescription.tagging }}
+                            </span>
+                            <span id="tagging-display" class="label label-warning" *ngIf="this.report.reportDescription.tagging == 'moderate'">
+                                {{ this.report.reportDescription.tagging }}
+                            </span>
+                            <span id="tagging-display" class="label label-danger" *ngIf="this.report.reportDescription.tagging == 'severe'">
+                                {{ this.report.reportDescription.tagging }}
+                            </span>
+                            <span id="tagging-display" class="label label-default" *ngIf="this.report.reportDescription.tagging == 'collapsed'">
+                                {{ this.report.reportDescription.tagging }}
+                            </span>
+                        </div>
+                        <div id="taggingOptions" [hidden]="!editing">
+                            <label class="radio-inline">
+                                <input type="radio" name="tagging" value="light">
+                                <span class="label label-success">light</span>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="tagging" value="moderate">
+                                <span class="label label-warning">moderate</span>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="tagging" value="severe">
+                                <span class="label label-danger">severe</span>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="tagging" value="collapsed">
+                                <span class="label label-default">collapsed</span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Source</strong>:
+                    </td>
+                    <td>
+                        <input style="border: 1px solid white; width: 100%; background: none " [(ngModel)]="report.reportDescription.source" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Collector</strong>:
+                    </td>
+                    <td>
+                        <input style="border: 1px solid white; width: 100%; background: none " [(ngModel)]="report.reportDescription.collector" disabled />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="report_summary" [hidden]="!readyForDownload">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Image Location</h4>
+                </div>
+                <div class="panel-body">
+                    <app-piechart id="location" [ID]="'location'" [STATISTICS]="locationSummary"></app-piechart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Component Type</h4>
+                </div>
+                <div class="panel-body">
+                    <app-piechart id="componentType" [ID]="'componentType'" [STATISTICS]="componentTypeSummary"></app-piechart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Component Damage Level</h4>
+                </div>
+                <div class="panel-body">
+                    <app-piechart id="componentDamage" [ID]="'componentDamage'" [STATISTICS]="componentDamageSummary"></app-piechart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Overall Damage Level</h4>
+                </div>
+                <div class="panel-body">
+                    <app-piechart id="overallDamage" [ID]="'overallDamage'" [STATISTICS]="overallDamageSummary"></app-piechart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <ng-container *ngFor="let image of report.images; index as i">
+        <div class="clearfix visible-lg" *ngIf="i % 6 == 0"></div>
+        <div class="clearfix visible-md" *ngIf="i % 4 == 0"></div>
+        <div class="clearfix visible-sm" *ngIf="i % 2 == 0"></div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+            <div class="thumbnail" [ngClass]="{ 'not-selected': !filterIsImageSelected(image) }" #imgEl>
+                <a [href]="image.file" target="_blank">
+                    <img [src]="image.thumbnail" />
+                </a>
+                <div class="caption" style="overflow: auto">
+                    {{ image.date | amDateFormat : "LLL" }}
+                    <br />
+                    <ng-container *ngFor="let ic of display_labels">
+                        <ng-template [ngIf]="ic.imageId == image.id">
+                            <ng-container *ngFor="let c of ic.categories">
+                                <span class="label label-default" *ngIf="c.confidence != 999; else userdefined">
+                                    {{ c.categoryName }}
+                                </span>
+                                <hr style="margin: 2px 0; border: 0" />
+                                <ng-template #userdefined>
+                                    <ng-container *ngFor="let cat of image.imageCategories">
+                                        <ng-template [ngIf]="authorized && cat.category.order == c.order && cat.confidence != 999">
+                                            <span class="label label-info">
+                                                <s>
+                                                    {{ cat.category.name }}
+                                                </s>
+                                            </span>
+                                            <br />
+                                        </ng-template>
+                                    </ng-container>
+                                    <span class="label label-default">
+                                        {{ c.categoryName }}
+                                    </span>
+                                    <hr [hidden]="!authorized" style="margin: 2px 0; border: 0" />
+                                </ng-template>
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+                    <div [hidden]="!authorized">
+                        <button type="button" class="btn btn-sm btn-danger btn-remove-image" (click)="removeImage(image, imgEl)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<div [hidden]="!authorized || !readyForDownload">
+    <a class="btn btn-primary btn-lg btn-block" [routerLink]="['/confirm', report.id]">Update labels</a>
+</div>
+<hr />
+
+<div [hidden]="!islogin">
+    <button class="fixed-btn add-btn" (click)="toggleCollection()" *ngIf="!added; else removal"><span class="glyphicon glyphicon-plus"></span> SAVE</button>
+    <ng-template #removal>
+        <button class="fixed-btn remove-btn" (click)="toggleCollection()"><span class="glyphicon glyphicon-minus"></span> REMOVE</button>
+    </ng-template>
+</div>
+
+<div id="bg" class="backgroud"></div>
+
+<!--<div class="row">
+    <ng-container *ngFor="let image of report.images; index as i">
+        <div class="clearfix visible-lg" *ngIf="i % 6 == 0"></div>
+        <div class="clearfix visible-md" *ngIf="i % 4 == 0"></div>
+        <div class="clearfix visible-sm" *ngIf="i % 2 == 0"></div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+            <div class="thumbnail" [ngClass]="{'not-selected': !filterIsImageSelected(image) }">
+                <a [href]="image.file" target="_blank">
+                    <img [src]="image.thumbnail" />
+                </a>
+                <div class="caption" style="overflow: auto">
+                    {{ image.date | amDateFormat:'LLL' }}
+                    <br />
+                    <ng-container *ngFor="let ic of image.imageCategories">
+                        <span class="label label-default" *ngIf="ic.confidence!=999;">
+                            {{ ic.category.name }}
+                        </span>
+                    </ng-container>
+                    <ng-container *ngFor="let ic of image.imageCategories">
+                        <ng-template [ngIf]="ic.confidence==999">
+                            <span class="label label-info">
+                                {{ ic.category.name }}
+                            </span>
+                        </ng-template>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>-->
+<!-- Sorted by date images display method -->
+<!--<div class="row">
+    <ng-container *ngFor="let si of sortedImages">
+        <div class="breadcrumb" style="width:99%">Upload date: {{si["date"] | amDateFormat:'LL'}}</div>
+        <div class="row">
+            <ng-container *ngFor="let image of si.images; index as i">
+                <div class="clearfix visible-lg" *ngIf="i % 6 == 0"></div>
+                <div class="clearfix visible-md" *ngIf="i % 4 == 0"></div>
+                <div class="clearfix visible-sm" *ngIf="i % 2 == 0"></div>
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+                    <div class="thumbnail" [ngClass]="{'not-selected': !filterIsImageSelected(image) }">
+                        <a [href]="image.file" target="_blank">
+                            <img [src]="image.thumbnail" />
+                        </a>
+                        <div class="caption" style="overflow: auto">
+                            {{ image.date | amDateFormat:'LLL' }}
+                            <br />
+                            <ng-container *ngFor="let ic of image.imageCategories">
+                                <span class="label label-default">{{ ic.category.name }}</span>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>-->

@@ -1,0 +1,122 @@
+﻿<div class="page-header">
+    <h1>New report</h1>
+</div>
+
+<form (ngSubmit)="newReport()" #reportForm="ngForm">
+    <div class="form-group" [class.has-success]="name.valid" [class.has-error]="!name.valid && !name.pristine">
+        <label class="control-label" for="name">Report Name</label>
+        <input type="text" class="form-control" id="name" required [(ngModel)]="report.name" name="name" #name="ngModel" />
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required</div>
+    </div>
+
+    <div class="form-group" [class.has-success]="date.valid" [class.has-error]="!date.valid && !date.pristine">
+        <label class="control-label" for="date">Creation Date</label>
+        <input type="date" class="form-control" id="date" required [ngModel]="report.date | amDateFormat : 'YYYY-MM-DD'" (ngModelChange)="changeDate($event)" name="date" #date="ngModel" />
+        <div [hidden]="date.valid || date.pristine" class="alert alert-danger">Date is required</div>
+    </div>
+
+    <!-- event information display and demo -->
+    <div class="row">
+        <div class="page-header">
+            <h3>Please provide detailed information (Optional)</h3>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-info overflow-auto">
+                <div class="panel-heading"><h3>Your Event Information</h3></div>
+                <ul class="list-group" style="overflow: auto">
+                    <li class="list-group-item"><strong>Description</strong>: {{ reportDescription.reportDetail }}</li>
+                    <li class="list-group-item"><strong>Hazard</strong>: {{ reportDescription.hazard }}</li>
+                    <li class="list-group-item"><strong>Magnitude</strong>: {{ reportDescription.magnitude }}</li>
+                    <li class="list-group-item"><strong>Year</strong>: {{ reportDescription.year }}</li>
+                    <li class="list-group-item"><strong>Location</strong>: {{ reportDescription.location }}</li>
+                    <li class="list-group-item"><strong>Source</strong>: {{ reportDescription.source }}</li>
+                    <li class="list-group-item"><strong>Collector</strong>: {{ reportDescription.collector }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-danger">
+                <div class="panel-heading"><h3>Sample Event Information</h3></div>
+                <ul class="list-group" style="overflow: auto">
+                    <li class="list-group-item"><strong>Description</strong>: 2017 Pohang Earthquake</li>
+                    <li class="list-group-item"><strong>Hazard</strong>: Earthquake</li>
+                    <li class="list-group-item"><strong>Magnitude</strong>: 5.4 Mw</li>
+                    <li class="list-group-item"><strong>Year</strong>: 2017</li>
+                    <li class="list-group-item"><strong>Location</strong>: Pohang, South Korea</li>
+                    <li class="list-group-item">
+                        <strong>Source</strong>: <a href="https://datacenterhub.org/resources/14728#2017%20Pohang%20Earthquake">https://datacenterhub.org/resources/14728#2017%20Pohang%20Earthquake</a>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Collector</strong>: ACI Committee 133, T.C. Chiou, Seok Hyeon Jeon, Gang Bak Park, American Concrete Institute, NCREE (National Center for Research on Earthquake
+                        Engineering, Gyeongnam National University of Science and Technology, Gyeongbook University
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- event information form -->
+    <div class="form-group">
+        <label class="control-label" for="eventdetail">Description</label>
+        <input type="text" class="form-control" id="reportDetail" [(ngModel)]="reportDescription.reportDetail" name="reportDetail" #reportDetail="ngModel" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="name">Hazard</label>
+        <input type="text" class="form-control" id="hazard" [(ngModel)]="reportDescription.hazard" name="hazard" #hazard="ngModel" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="name">Magnitude</label>
+        <input type="text" class="form-control" id="magnitude" [(ngModel)]="reportDescription.magnitude" name="magnitude" #magnitude="ngModel" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="name">Year</label>
+        <select [(ngModel)]="reportDescription.year" class="form-control" id="year" name="year" #year="ngModel">
+            <option>Select Year</option>
+            <ng-container *ngFor="let year of years">
+                <option>{{ year }}</option>
+            </ng-container>
+        </select>
+    </div>
+
+    <!--<div class="form-group">
+        <label class="control-label" for="name">Event Location</label>
+        <input type="text" class="form-control" id="location"
+               [(ngModel)]="reportDescription.location" name="location"
+               #location="ngModel">
+    </div>-->
+
+    <div class="form-group">
+        <label>Enter address</label>
+        <input
+            [(ngModel)]="reportDescription.location"
+            name="location"
+            #location="ngModel"
+            type="text"
+            class="form-control"
+            (keydown.enter)="$event.preventDefault()"
+            placeholder="Search Location"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="off"
+            #search />
+    </div>
+    <agm-map id="agm-map" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+    </agm-map>
+
+    <div class="form-group">
+        <label class="control-label" for="name">Source</label>
+        <input type="text" class="form-control" id="source" [(ngModel)]="reportDescription.source" name="source" #source="ngModel" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="name">Collector</label>
+        <input type="text" class="form-control" id="collector" [(ngModel)]="reportDescription.collector" name="collector" #collector="ngModel" />
+    </div>
+    <!--  -->
+
+    <button type="submit" class="btn btn-success btn-lg" [disabled]="!reportForm.form.valid">Submit</button>
+</form>
+<hr />

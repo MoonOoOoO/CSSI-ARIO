@@ -1,0 +1,10 @@
+﻿.AClass {
+    top: 5px;
+    right: 9px;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.file-label {
+    margin: 0 5px;
+}
