@@ -114,3 +114,22 @@ $ dotnet publish -c Release -r ubuntu.16.04-x64
 
 ### NSF Award Link
 https://www.nsf.gov/awardsearch/show-award?AWD_ID=1835473
+
+Please cite the following publication when use this work
+```
+@inproceedings{Dyke2021ARIO,
+  author    = {Dyke, Shirley J. and Liu, X. and Choi, J. and Yeum, C. M. and Park, J. and Midwinter, M. and Hacker, T.
+               and Chu, Z. and Ramirez, J. and Poston, R. and Gaillard, M. and Benes, B. and Lenjani, A. and Zhang, X.},
+  title     = {Learning from Earthquakes Using the Automatic Reconnaissance Image Organizer (ARIO)},
+  booktitle = {Proceedings of the 17th World Conference on Earthquake Engineering},
+  year      = {2021},
+  month     = sep,
+  url       = {https://par.nsf.gov/servlets/purl/10308795}
+}
+```
+
+Dyke, S. J., Liu, X., Choi, J., Yeum, C. M., Park, J., Midwinter, M., Hacker, T., Chu, Z., Ramirez, J.,
+Poston, R., Gaillard, M., Benes, B., Lenjani, A., & Zhang, X. (2021, September). Learning from
+Earthquakes Using the Automatic Reconnaissance Image Organizer (ARIO). In Proceeding of the 17th
+World Conference on Earthquake Engineering. https://par.nsf.gov/servlets/purl/10308795
+
